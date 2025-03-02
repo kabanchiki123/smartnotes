@@ -1,4 +1,8 @@
 from PyQt6.QtWidgets import *
+from file_helper import *
+
+notes = read_from_file()
+write_in_file(notes)
 
 app = QApplication([])
 window = QWidget()
@@ -16,6 +20,9 @@ tag_input = QLineEdit()
 main_line = QHBoxLayout()
 main_line.addWidget(pole)
 
+notatku_list.addItems(notes)
+
+
 v1 = QVBoxLayout()
 v1.addWidget(notes_list_lbl)
 v1.addWidget(notatku_list)
@@ -26,6 +33,15 @@ v1.addWidget(tag_list_lbl)
 v1.addWidget(tags_list)
 v1.addWidget(tag_input)
 main_line.addLayout(v1)
+
+def show_note():
+    key = notatku_list.currentItem().text()
+    pole.setText(notes[key]["текст"])
+    tags_list.clear
+    tags_list.addItems(notes[key]["текст"])
+
+notatku_list.itemClicked.connect(show_note)
+
 
 
 window.setLayout(main_line)
