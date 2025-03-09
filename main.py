@@ -36,13 +36,52 @@ main_line.addLayout(v1)
 
 def show_note():
     key = notatku_list.currentItem().text()
-    pole.setText(notes[key]["текст"])
-    tags_list.clear
-    tags_list.addItems(notes[key]["текст"])
+    text_status = len (pole.toPlainText())
+    if text_status >= 1:
+        pole.setText(notes[key]["текст"])
+        tags_list.clear()
+        tags_list.addItems(notes[key]["теги"])
+    else:
+        notes[key]["текст"] = "Немає тексту"
+        pole.setText(notes[key]["текст"])
+        tags_list.clear()
+        tags_list.addItems(notes[key]["теги"])
+
 
 notatku_list.itemClicked.connect(show_note)
 
+def add_note():
+    note_name, ok = QInputDialog.getText(window, "Нова нотатка", "Введіть нову нотатку")
+    if ok == True:
+        notes[note_name] = {
+            "текст": "",
+            "теги": [
 
+            ]
+        }
+        notatku_list.clear
+        notatku_list.addItems(notes)
+        write_in_file(notes)
+
+add_note_btn.clicked.connect(add_note)
+notatku_list.itemClicked.connect(show_note)
+
+def save_note_func():
+    text = pole.toPlainText()
+    note_key = notatku_list.currentItem().text()
+    notes[note_key]["текст"] = text
+    write_in_file(notes)
+
+save_note_btn.clicked.connect(save_note_func)
+
+def delete_note_func():
+    key = notatku_list.currentItem().text()
+    notes.pop(key)
+    notatku_list.clear()
+    notatku_list.addItems(notes)
+    write_in_file(notes)
+
+delete_note_btn.clicked.connect(delete_note_func)
 
 window.setLayout(main_line)
 window.show()
