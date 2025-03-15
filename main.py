@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import *
+from PyQt6.QtWidget import *
 from file_helper import *
 
 notes = read_from_file()
