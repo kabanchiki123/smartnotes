@@ -1,4 +1,4 @@
-from PyQt6.QtWidget import *
+from PyQt6.QtWidgets import *
 from file_helper import *
 
 notes = read_from_file()
@@ -13,7 +13,9 @@ notatku_list = QListWidget()
 add_note_btn = QPushButton("Додати замітку")
 delete_note_btn = QPushButton("Видалити")
 save_note_btn = QPushButton("Зберегти")
-
+search_tag_btn = QPushButton("Шукати тег по замітці")
+add_tag_btn = QPushButton("Додати тег")
+delete_tag_btn = QPushButton("Видалити")
 tag_list_lbl = QLabel("Cписок заміток")
 tags_list = QListWidget()
 tag_input = QLineEdit()
@@ -21,7 +23,6 @@ main_line = QHBoxLayout()
 main_line.addWidget(pole)
 
 notatku_list.addItems(notes)
-
 
 v1 = QVBoxLayout()
 v1.addWidget(notes_list_lbl)
@@ -32,6 +33,9 @@ v1.addWidget(add_note_btn)
 v1.addWidget(tag_list_lbl)
 v1.addWidget(tags_list)
 v1.addWidget(tag_input)
+v1.addWidget(search_tag_btn)
+v1.addWidget(add_tag_btn)
+v1.addWidget(delete_tag_btn)
 main_line.addLayout(v1)
 
 def show_note():
@@ -80,8 +84,23 @@ def delete_note_func():
     notatku_list.clear()
     notatku_list.addItems(notes)
     write_in_file(notes)
-
 delete_note_btn.clicked.connect(delete_note_func)
+
+
+def add_tag_func():
+    tag_name, ok = QInputDialog.getText(window, "Новий тег", "Введіть новий тег")
+    if ok == True:
+        notes[tag_name] = {
+            "текст": "",
+            "теги": [
+
+            ]
+        }
+        tags_list.clear
+        tags_list.addItems(notes)
+        write_in_file(notes)
+add_tag_btn.clicked.connect(add_tag_func)
+
 
 window.setLayout(main_line)
 window.show()
